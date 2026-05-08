@@ -1,6 +1,6 @@
+import { useState } from 'react';
 import 'bulma/css/bulma.css';
 import './App.scss';
-import { useState } from 'react';
 import cn from 'classnames';
 
 export const goodsFromServer: string[] = [
@@ -16,18 +16,23 @@ export const goodsFromServer: string[] = [
   'Garlic',
 ];
 
+enum SortType {
+  Alphabet = 'alphabet',
+  Length = 'length',
+}
+
 function getPreparedGoods(
   goods: string[],
-  sortType: 'alphabet' | 'length' | null,
+  sortType: SortType | null,
   isReversed: boolean,
 ): string[] {
   const preparedGoods = [...goods];
 
-  if (sortType === 'alphabet') {
+  if (sortType === SortType.Alphabet) {
     preparedGoods.sort((a, b) => a.localeCompare(b));
   }
 
-  if (sortType === 'length') {
+  if (sortType === SortType.Length) {
     preparedGoods.sort((a, b) => a.length - b.length);
   }
 
@@ -39,7 +44,7 @@ function getPreparedGoods(
 }
 
 export const App = () => {
-  const [sortType, setSortType] = useState<'alphabet' | 'length' | null>(null);
+  const [sortType, setSortType] = useState<SortType | null>(null);
   const [isReversed, setIsReversed] = useState<boolean>(false);
 
   const visibleGoods: string[] = getPreparedGoods(
@@ -54,9 +59,9 @@ export const App = () => {
         <button
           type="button"
           className={cn('button is-info', {
-            'is-light': sortType !== 'alphabet',
+            'is-light': sortType !== SortType.Alphabet,
           })}
-          onClick={() => setSortType('alphabet')}
+          onClick={() => setSortType(SortType.Alphabet)}
         >
           Sort alphabetically
         </button>
@@ -64,9 +69,9 @@ export const App = () => {
         <button
           type="button"
           className={cn('button is-info', {
-            'is-light': sortType !== 'length',
+            'is-light': sortType !== SortType.Length,
           })}
-          onClick={() => setSortType('length')}
+          onClick={() => setSortType(SortType.Length)}
         >
           Sort by length
         </button>
